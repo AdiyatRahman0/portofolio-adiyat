@@ -3,312 +3,183 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Portfolio of Adiyat - Frontend Developer" />
-  <title>Adiyat | Frontend Developer & TKJ Specialist</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  <meta name="description" content="Portfolio of Adiyat - Senior Frontend Engineer" />
+  <title>Adiyat | Frontend Architecture & AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
     :root {
       --bg: #08050c;
-      --surface: #100d18;
-      --surface2: #1a1528;
+      --surface: #120f1d;
+      --surface2: #1a1629;
       --primary: #ff1a6c;
       --primary-dim: rgba(255, 26, 108, 0.15);
-      --primary-glow: rgba(255, 26, 108, 0.4);
-      --accent: #a855f7;
       --text: #f0eaf8;
-      --muted: #7a6f8a;
-      --border: rgba(255,255,255,0.06);
+      --muted: #a197af;
+      --border: rgba(255,255,255,0.08);
     }
 
+    /* Reset & Base */
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; font-size: 16px; }
-
+    html { scroll-behavior: smooth; }
     body {
       font-family: 'DM Sans', sans-serif;
       background-color: var(--bg);
       color: var(--text);
-      overflow-x: hidden;
       line-height: 1.6;
+      overflow-x: hidden;
     }
 
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
-      opacity: 0.025;
-      pointer-events: none;
-      z-index: 9998;
-    }
-
-    /* --- INTRO SCREEN --- */
-    #intro {
-      position: fixed;
-      inset: 0;
-      background: var(--bg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 99999;
-      cursor: pointer;
-      transition: opacity 0.7s ease, visibility 0.7s ease;
-    }
-    #intro.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-    .intro-inner { text-align: center; }
-    .intro-ring { width: 100px; height: 100px; border: 2px solid var(--border); border-top-color: var(--primary); border-radius: 50%; margin: 0 auto 20px; animation: spin 2s linear infinite; }
-    @keyframes spin { to { transform: rotate(360deg); } }
+    /* Layout Containers */
+    section { padding: 80px 6% 60px; max-width: 1200px; margin: 0 auto; min-height: auto; }
+    .reveal { opacity: 0; transform: translateY(20px); transition: 0.6s ease-out; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
 
     /* --- NAVIGATION --- */
     nav {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 10000;
-      background: rgba(16, 13, 24, 0.85);
-      backdrop-filter: blur(20px);
-      border: 1px solid var(--border);
-      border-radius: 100px;
-      padding: 10px 24px;
-      display: flex;
-      align-items: center;
-      gap: 4px;
+      position: fixed; top: 15px; left: 50%; transform: translateX(-50%);
+      z-index: 1000; background: rgba(18, 15, 29, 0.9); backdrop-filter: blur(15px);
+      border: 1px solid var(--border); border-radius: 100px; padding: 8px 20px;
+      display: flex; align-items: center; gap: 5px; width: auto; white-space: nowrap;
     }
-    .nav-logo { font-family: 'Syne', sans-serif; font-weight: 800; color: var(--primary); margin-right: 15px; }
     nav a { text-decoration: none; font-size: 0.85rem; color: var(--muted); padding: 8px 15px; border-radius: 100px; transition: 0.3s; }
-    nav a.active { background: var(--primary-dim); color: var(--primary); }
+    nav a.active { background: var(--primary); color: white; }
 
+    /* Mobile Nav (Bottom) */
     .mobile-nav {
-      display: none;
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 10001;
-      background: rgba(16, 13, 24, 0.95);
-      backdrop-filter: blur(20px);
-      border: 1px solid var(--border);
-      border-radius: 25px;
-      width: 92%;
-      max-width: 450px;
-      height: 70px;
-      justify-content: space-around;
-      align-items: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      display: none; position: fixed; bottom: 0; left: 0; right: 0;
+      background: var(--surface); border-top: 1px solid var(--border);
+      padding: 12px 0; z-index: 1000; justify-content: space-around;
     }
-    .mobile-nav a {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 0.65rem;
-      gap: 4px;
-      flex: 1;
-    }
-    .mobile-nav a i { font-size: 1.1rem; }
+    .mobile-nav a { color: var(--muted); text-decoration: none; font-size: 0.7rem; text-align: center; }
+    .mobile-nav a i { display: block; font-size: 1.2rem; margin-bottom: 4px; }
     .mobile-nav a.active { color: var(--primary); }
 
-    /* --- SECTIONS --- */
-    section { min-height: 100vh; padding: 120px 8% 80px; }
-    .section-label { color: var(--primary); font-family: 'Syne', sans-serif; text-transform: uppercase; letter-spacing: 3px; font-size: 0.7rem; margin-bottom: 10px; }
-    .section-title { font-family: 'Syne', sans-serif; font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; margin-bottom: 50px; }
-
-    /* --- HERO --- */
-    #home { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 40px; align-items: center; }
-    .hero-name { font-family: 'Syne', sans-serif; font-size: clamp(3rem, 8vw, 5.5rem); line-height: 1; margin-bottom: 15px; }
-    .hero-role { color: var(--primary); font-size: 1.5rem; font-weight: 600; margin-bottom: 20px; }
-    .hero-desc { color: var(--muted); max-width: 500px; margin-bottom: 30px; }
-    .hero-img-frame { border-radius: 30px; overflow: hidden; border: 1px solid var(--primary-dim); background: var(--surface2); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
-    .hero-img-frame img { width: 100%; display: block; filter: grayscale(20%); transition: 0.5s; }
-    .hero-img-frame:hover img { filter: grayscale(0%); transform: scale(1.05); }
-
-    /* --- BADGE AI --- */
+    /* --- HERO SECTION --- */
+    #home { padding-top: 140px; display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 40px; align-items: center; }
     .ai-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: linear-gradient(90deg, var(--primary-dim), rgba(168, 85, 247, 0.2));
-      border: 1px solid var(--primary-dim);
-      padding: 6px 14px;
-      border-radius: 100px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 20px;
+      display: inline-flex; align-items: center; gap: 8px; background: var(--primary-dim);
+      border: 1px solid var(--primary); padding: 6px 15px; border-radius: 100px;
+      font-size: 0.75rem; font-weight: 700; color: var(--primary); margin-bottom: 20px;
+    }
+    .hero-name { font-family: 'Syne', sans-serif; font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: 1.1; margin-bottom: 15px; }
+    .hero-desc { color: var(--muted); font-size: 1.1rem; margin-bottom: 30px; max-width: 550px; }
+    .hero-img-frame { border-radius: 24px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+    .hero-img-frame img { width: 100%; display: block; }
+
+    /* --- STATS & EXPERTISE --- */
+    .stats-row { display: flex; gap: 30px; margin-top: 30px; }
+    .stat-item h4 { font-family: 'Syne', sans-serif; font-size: 1.8rem; color: var(--primary); }
+    .stat-item p { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; }
+
+    .expertise-tags { display: flex; flex-wrap: wrap; gap: 10px; margin: 40px 0; }
+    .tag { 
+      background: var(--surface2); border: 1px solid var(--border); color: var(--text);
+      padding: 8px 16px; border-radius: 8px; font-size: 0.85rem; font-weight: 500;
     }
 
-    /* --- PROJECTS GRID --- */
+    /* --- PROJECTS --- */
+    .section-title { font-family: 'Syne', sans-serif; font-size: 2rem; margin-bottom: 40px; }
     .projects-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; }
-    .project-card { background: var(--surface); border-radius: 20px; border: 1px solid var(--border); overflow: hidden; transition: 0.3s; display: flex; flex-direction: column; }
-    .project-card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
-    .project-img { height: 220px; background: var(--surface2); overflow: hidden; position: relative; }
-    .project-img img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
-    .project-card:hover .project-img img { transform: scale(1.1); }
-    .project-body { padding: 25px; flex-grow: 1; }
-    .tag { font-size: 0.65rem; background: var(--surface2); border: 1px solid var(--border); color: var(--muted); padding: 4px 10px; border-radius: 50px; margin-right: 5px; display: inline-block; margin-bottom: 8px; }
-    .project-links { display: flex; gap: 15px; margin-top: 20px; border-top: 1px solid var(--border); padding-top: 15px; }
-    .project-link { color: var(--text); text-decoration: none; font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; gap: 6px; transition: 0.3s; }
-    .project-link:hover { color: var(--primary); }
-    .project-link.primary-link { color: var(--primary); }
-
-    /* --- EXPERIENCE SECTION --- */
-    .exp-item { margin-bottom: 30px; padding-left: 20px; border-left: 2px solid var(--primary-dim); position: relative; }
-    .exp-item::before { content: ''; position: absolute; left: -7px; top: 0; width: 12px; height: 12px; border-radius: 50%; background: var(--primary); }
-    .exp-date { font-size: 0.8rem; color: var(--primary); font-weight: bold; margin-bottom: 5px; }
-    .exp-title { font-size: 1.2rem; font-weight: bold; }
-    .exp-sub { font-size: 0.9rem; color: var(--muted); margin-bottom: 10px; }
+    .project-card { background: var(--surface); border-radius: 20px; border: 1px solid var(--border); overflow: hidden; height: 100%; display: flex; flex-direction: column; }
+    .project-img { height: 200px; background: var(--surface2); overflow: hidden; }
+    .project-img img { width: 100%; height: 100%; object-fit: cover; }
+    .project-body { padding: 20px; flex-grow: 1; }
+    .project-body h3 { margin-bottom: 10px; font-size: 1.25rem; }
+    .project-body p { font-size: 0.9rem; color: var(--muted); margin-bottom: 20px; }
+    .project-links { display: flex; gap: 15px; margin-top: auto; }
+    .project-link { text-decoration: none; font-weight: 700; font-size: 0.85rem; color: var(--primary); }
 
     /* --- CONTACT --- */
-    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; }
-    .contact-item {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      background: var(--surface);
-      padding: 20px;
-      border-radius: 15px;
-      margin-bottom: 15px;
-      text-decoration: none;
-      color: var(--text);
-      border: 1px solid var(--border);
-      transition: 0.3s;
+    .contact-container { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+    .contact-card { 
+      display: flex; align-items: center; gap: 15px; background: var(--surface);
+      padding: 15px; border-radius: 12px; border: 1px solid var(--border);
+      text-decoration: none; color: var(--text); margin-bottom: 15px; transition: 0.3s;
     }
-    .contact-item:hover { border-color: var(--primary); transform: translateX(6px); background: var(--surface2); }
-    .contact-icon { width: 45px; height: 45px; background: var(--primary-dim); color: var(--primary); display: flex; align-items: center; justify-content: center; border-radius: 10px; }
-    .contact-text { flex-grow: 1; }
-    .contact-label { font-size: 0.7rem; color: var(--muted); }
-    .contact-value { font-size: 0.9rem; font-weight: 500; }
-    .contact-form { background: var(--surface); padding: 30px; border-radius: 20px; border: 1px solid var(--border); }
-    .contact-form input, .contact-form textarea {
-      width: 100%; padding: 12px; background: var(--bg); border: 1px solid var(--border); color: white; border-radius: 10px; margin-bottom: 10px; outline: none; transition: 0.3s;
-    }
-    .contact-form input:focus, .contact-form textarea:focus { border-color: var(--primary); }
-    .contact-form button {
-      width: 100%; padding: 14px; background: var(--primary); border: none; color: white; font-weight: bold; border-radius: 10px; cursor: pointer; transition: 0.3s;
-    }
-    .contact-form button:hover { transform: translateY(-2px); box-shadow: 0 5px 15px var(--primary-glow); }
+    .contact-card:hover { border-color: var(--primary); background: var(--surface2); }
+    .contact-card i { width: 40px; height: 40px; background: var(--primary-dim); color: var(--primary); display: flex; align-items: center; justify-content: center; border-radius: 8px; }
 
-    /* --- RESPONSIVE --- */
-    @media (max-width: 768px) {
+    /* Responsiveness */
+    @media (max-width: 900px) {
       nav { display: none; }
       .mobile-nav { display: flex; }
-      #home { grid-template-columns: 1fr; text-align: center; }
+      #home { grid-template-columns: 1fr; text-align: center; padding-top: 80px; }
       .hero-desc { margin: 0 auto 30px; }
-      .projects-grid, .contact-grid { grid-template-columns: 1fr; }
-      section { padding-bottom: 120px; }
+      .hero-img-frame { max-width: 300px; margin: 0 auto; }
+      .stats-row { justify-content: center; }
+      .projects-grid, .contact-container { grid-template-columns: 1fr; }
+      section { padding: 60px 5% 40px; }
     }
-
-    .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s ease-out; }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
   </style>
 </head>
 <body>
 
-<div id="intro">
-  <div class="intro-inner">
-    <div class="intro-ring"></div>
-    <h1 class="hero-name" style="font-size: 3rem;">Adiyat<span>.</span></h1>
-    <p>Click to Explore</p>
-  </div>
-</div>
-
 <nav>
-  <div class="nav-logo">ADYAT</div>
   <a href="#home" class="active">Home</a>
-  <a href="#about">About</a>
-  <a href="#projects">Projects</a>
+  <a href="#about">Expertise</a>
+  <a href="#projects">Work</a>
   <a href="#contact">Contact</a>
 </nav>
 
 <nav class="mobile-nav">
   <a href="#home" class="active"><i class="fas fa-home"></i>Home</a>
-  <a href="#about"><i class="fas fa-user"></i>About</a>
-  <a href="#projects"><i class="fas fa-folder-open"></i>Projects</a>
+  <a href="#projects"><i class="fas fa-code"></i>Work</a>
   <a href="#contact"><i class="fas fa-envelope"></i>Contact</a>
 </nav>
 
 <section id="home">
   <div>
-    <div class="ai-badge">
-      <i class="fas fa-microchip"></i> Senior Systems Integration & Frontend Architecture
-    </div>
-    <div class="section-label">Frontend Engineer | AI Specialist</div>
+    <div class="ai-badge"><i class="fas fa-robot"></i> Senior AI-Driven Engineer</div>
     <h1 class="hero-name">Adiyat Rahman</h1>
-    <p class="hero-desc">Membangun infrastruktur digital yang skalabel dengan fokus pada performa tinggi, integrasi AI tingkat lanjut, dan arsitektur frontend yang bersih. Berpengalaman dalam mengoptimalkan alur kerja otomatisasi.</p>
-    
-    <div style="display: flex; gap: 15px; margin-top: 20px;">
-       <a href="#projects" style="background: var(--primary); color: white; padding: 14px 30px; border-radius: 100px; text-decoration: none; font-weight: bold; transition: 0.3s;">Explore Solutions</a>
-       <a href="https://github.com/AdiyatRahman0" target="_blank" style="border: 1px solid var(--border); color: var(--text); padding: 14px 30px; border-radius: 100px; text-decoration: none; font-weight: bold; transition: 0.3s;">Source Systems</a>
+    <p class="hero-desc">Membangun ekosistem digital yang efisien dengan arsitektur frontend modern dan solusi otomatisasi cerdas.</p>
+    <div class="stats-row">
+      <div class="stat-item"><h4>98%</h4><p>Perf Score</p></div>
+      <div class="stat-item"><h4>10+</h4><p>Projects</p></div>
+      <div class="stat-item"><h4>24/7</h4><p>Uptime</p></div>
     </div>
   </div>
   <div class="hero-img-frame">
-    <img src="A1.png" alt="Adiyat Rahman - Senior Frontend Engineer">
+    <img src="A1.png" alt="Adiyat Rahman">
   </div>
 </section>
 
 <section id="about" class="reveal">
-  <div class="section-label">Expertise</div>
   <h2 class="section-title">Technical Strategy</h2>
-  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px;">
-    <div>
-      <p style="color: var(--text); margin-bottom: 20px; font-size: 1.1rem;">Berfokus pada **Performance-First Development** dan **Automation Engineering**.</p>
-      <p style="color: var(--muted);">Spesialisasi dalam membangun aplikasi web yang responsif dengan React/Next.js, mengoptimalkan infrastruktur jaringan MikroTik untuk skalabilitas bisnis, dan menciptakan sistem AI otonom yang mengurangi biaya operasional manual secara signifikan.</p>
-      
-      <div style="margin-top: 30px; display: flex; gap: 20px;">
-         <div><h4 style="color: var(--primary);">98%</h4><p style="font-size: 0.7rem; color: var(--muted);">Lighthouse Perf Score</p></div>
-         <div><h4 style="color: var(--primary);">10+</h4><p style="font-size: 0.7rem; color: var(--muted);">Automated Systems</p></div>
-         <div><h4 style="color: var(--primary);">24/7</h4><p style="font-size: 0.7rem; color: var(--muted);">System Uptime</p></div>
-      </div>
-    </div>
-    <div class="experience">
-      <div class="exp-item">
-        <div class="exp-date">Current</div>
-        <div class="exp-title">Frontend Architecture & AI Solutions</div>
-        <div class="exp-sub">Independent Consultant / Lead Developer</div>
-      </div>
-      <div class="exp-item">
-        <div class="exp-date">2025</div>
-        <div class="exp-title">KPP Madya Dua Jakarta Barat</div>
-        <div class="exp-sub">Information Technology & Network Infrastructure Intern</div>
-      </div>
-    </div>
+  <p style="color: var(--muted); font-size: 1.1rem; max-width: 800px;">Spesialisasi dalam <strong>Frontend Architecture</strong> dan <strong>Network Engineering</strong>. Fokus pada penggunaan React, Tailwind, dan integrasi AI untuk menciptakan sistem otonom yang skalabel.</p>
+  <div class="expertise-tags">
+    <span class="tag">React.js</span>
+    <span class="tag">Next.js</span>
+    <span class="tag">TypeScript</span>
+    <span class="tag">MikroTik Admin</span>
+    <span class="tag">AI Prompting</span>
+    <span class="tag">Node.js</span>
   </div>
 </section>
 
-<div style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 50px;">
-  <span class="tag">Next.js</span><span class="tag">TypeScript</span><span class="tag">RESTful API</span>
-  <span class="tag">Network Admin</span><span class="tag">AI Prompt Engineering</span><span class="tag">Git Architecture</span>
-</div>
-
 <section id="projects" class="reveal">
-  <div class="section-label">Case Studies</div>
   <h2 class="section-title">High-Impact Solutions</h2>
   <div class="projects-grid">
     <div class="project-card">
-      <div class="project-img"><img src="A2.jpg" alt="Kateki Solution"></div>
+      <div class="project-img"><img src="A2.jpg" alt="Kateki"></div>
       <div class="project-body">
-        <span class="tag">Scalable Commerce</span><span class="tag">Optimization</span>
         <h3>Kateki Ecosystem</h3>
-        <p style="font-size: 0.85rem; color: var(--muted); margin: 10px 0;">Transformasi sistem transaksi digital yang mengintegrasikan automated payment gateway dengan efisiensi pemrosesan data real-time.</p>
+        <p>Sistem e-commerce top-up game otomatis dengan integrasi payment gateway dan WhatsApp bot.</p>
         <div class="project-links">
-          <a href="https://kateki-top-up--kateki0007.replit.app/" class="project-link primary-link" target="_blank"><i class="fas fa-external-link-alt"></i> Architecture Demo</a>
-          <a href="#" class="project-link"><i class="fas fa-file-code"></i> Technical Documentation</a>
+          <a href="https://kateki-top-up--kateki0007.replit.app/" class="project-link" target="_blank">Live Demo →</a>
+          <a href="https://github.com/AdiyatRahman0" class="project-link" target="_blank">Source</a>
         </div>
       </div>
     </div>
-    
     <div class="project-card">
-      <div class="project-img"><img src="A5.jpg" alt="Emilia Enterprise"></div>
+      <div class="project-img"><img src="A5.jpg" alt="Emilia"></div>
       <div class="project-body">
-        <span class="tag">Autonomous AI</span><span class="tag">Node.js</span>
-        <h3>Emilia Neural Assistant</h3>
-        <p style="font-size: 0.85rem; color: var(--muted); margin: 10px 0;">Sistem asisten otonom tingkat tinggi yang memanfaatkan LLM untuk mengotomatisasi interaksi pengguna dan manajemen konten media.</p>
+        <h3>Emilia Neural Bot</h3>
+        <p>Asisten AI otonom untuk manajemen interaksi WhatsApp dan otomatisasi media.</p>
         <div class="project-links">
-          <a href="https://emilia-ai-assistant--saaman869.replit.app/" class="project-link primary-link" target="_blank"><i class="fas fa-bolt"></i> Live System</a>
-          <a href="#" class="project-link"><i class="fab fa-github"></i> Repository</a>
+          <a href="https://emilia-ai-assistant--saaman869.replit.app/" class="project-link" target="_blank">Live Demo →</a>
+          <a href="https://github.com/AdiyatRahman0" class="project-link" target="_blank">Source</a>
         </div>
       </div>
     </div>
@@ -316,81 +187,48 @@
 </section>
 
 <section id="contact" class="reveal">
-  <div class="section-label">Interaction</div>
   <h2 class="section-title">Get In Touch</h2>
-  <div class="contact-grid">
-    <div class="contact-left">
-      <a href="mailto:rahmanadiyat0@gmail.com" class="contact-item">
-        <div class="contact-icon"><i class="fas fa-envelope"></i></div>
-        <div class="contact-text">
-          <div class="contact-label">Email</div>
-          <div class="contact-value">rahmanadiyat0@gmail.com</div>
-        </div>
+  <div class="contact-container">
+    <div>
+      <a href="mailto:rahmanadiyat0@gmail.com" class="contact-card">
+        <i class="fas fa-envelope"></i>
+        <div><p style="font-size: 0.7rem; color: var(--muted);">Email</p><strong>rahmanadiyat0@gmail.com</strong></div>
       </a>
-      <a href="https://wa.me/6289601574070" class="contact-item">
-        <div class="contact-icon"><i class="fab fa-whatsapp"></i></div>
-        <div class="contact-text">
-          <div class="contact-label">WhatsApp</div>
-          <div class="contact-value">+62 896-0157-4070</div>
-        </div>
-      </a>
-      <a href="https://github.com/AdiyatRahman0" class="contact-item">
-        <div class="contact-icon"><i class="fab fa-github"></i></div>
-        <div class="contact-text">
-          <div class="contact-label">GitHub</div>
-          <div class="contact-value">AdiyatRahman0</div>
-        </div>
+      <a href="https://wa.me/6289601574070" class="contact-card">
+        <i class="fab fa-whatsapp"></i>
+        <div><p style="font-size: 0.7rem; color: var(--muted);">WhatsApp</p><strong>+62 896-0157-4070</strong></div>
       </a>
     </div>
-    <div class="contact-form">
-      <p style="margin-bottom: 20px; color: var(--muted);">Ingin bekerja sama atau sekadar bertanya? Kirim pesan cepat!</p>
-      <input type="text" placeholder="Nama Anda" id="form-name" />
-      <textarea placeholder="Pesan" rows="4" id="form-msg"></textarea>
-      <button onclick="sendWhatsApp()">Kirim via WhatsApp ↗</button>
+    <div style="background: var(--surface); padding: 25px; border-radius: 20px; border: 1px solid var(--border);">
+      <p style="font-size: 0.9rem; color: var(--muted); margin-bottom: 15px;">Kirim pesan langsung untuk kolaborasi teknis.</p>
+      <button onclick="window.location.href='https://wa.me/6289601574070'" style="width: 100%; padding: 12px; background: var(--primary); border: none; color: white; border-radius: 10px; font-weight: bold; cursor: pointer;">Start Conversation</button>
     </div>
   </div>
 </section>
 
-<footer style="text-align: center; padding: 60px 40px; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.85rem;">
-  <p>© 2026 Adiyat Rahman. Built with React & AI Efficiency.</p>
+<footer style="text-align: center; padding: 40px; color: var(--muted); font-size: 0.8rem; border-top: 1px solid var(--border); margin-top: 40px;">
+  © 2026 Adiyat Rahman Musalan. Crafted for Performance.
 </footer>
 
 <script>
-  // Intro Logic
-  const intro = document.getElementById('intro');
-  intro.addEventListener('click', () => intro.classList.add('hidden'));
-  setTimeout(() => intro.classList.add('hidden'), 3500);
-
-  // Scroll Reveal
+  // Simple Reveal Logic
   const reveals = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('visible'); });
   }, { threshold: 0.1 });
   reveals.forEach(r => observer.observe(r));
 
-  // Active Nav Link on Scroll
+  // Active Link Switcher
   window.addEventListener('scroll', () => {
     const sections = document.querySelectorAll('section');
     const navLinks = document.querySelectorAll('nav a, .mobile-nav a');
-    let current = '';
-    sections.forEach(section => {
-      const sectionTop = section.offsetTop;
-      if (pageYOffset >= sectionTop - 200) { current = section.getAttribute('id'); }
-    });
-    navLinks.forEach(link => {
-      link.classList.remove('active');
-      if (link.getAttribute('href').includes(current)) { link.classList.add('active'); }
+    let current = 'home';
+    sections.forEach(s => { if(pageYOffset >= s.offsetTop - 200) current = s.getAttribute('id'); });
+    navLinks.forEach(l => {
+      l.classList.remove('active');
+      if(l.getAttribute('href').includes(current)) l.classList.add('active');
     });
   });
-
-  // WhatsApp Form Logic
-  function sendWhatsApp() {
-    const name = document.getElementById('form-name').value.trim();
-    const message = document.getElementById('form-msg').value.trim();
-    if (!name || !message) { alert('Silakan isi nama dan pesan Anda.'); return; }
-    const url = `https://wa.me/6289601574070?text=${encodeURIComponent(`Halo Adiyat, saya ${name}. ${message}`)}`;
-    window.open(url, '_blank');
-  }
 </script>
 
 </body>
