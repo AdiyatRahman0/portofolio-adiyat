@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Portfolio of Adiyat - Frontend Developer" />
+  <title>Adiyat | Frontend Developer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --bg: #08050c;
+      --surface: #100d18;
+      --surface2: #1a1528;
+      --primary: #ff1a6c;
+      --primary-dim: rgba(255, 26, 108, 0.15);
+      --primary-glow: rgba(255, 26, 108, 0.4);
+      --accent: #a855f7;
+      --text: #f0eaf8;
+      --muted: #7a6f8a;
+      --border: rgba(255,255,255,0.06);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.025;
+      pointer-events: none;
+      z-index: 9998;
+    }
+
+    /* --- INTRO SCREEN --- */
+    #intro {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+      cursor: pointer;
+      transition: opacity 0.7s ease, visibility 0.7s ease;
+    }
+    #intro.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+    .intro-inner { text-align: center; }
+    .intro-ring { width: 100px; height: 100px; border: 2px solid var(--border); border-top-color: var(--primary); border-radius: 50%; margin: 0 auto 20px; animation: spin 2s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* --- DESKTOP NAVIGATION --- */
+    nav {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10000;
+      background: rgba(16, 13, 24, 0.85);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 10px 24px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .nav-logo { font-family: 'Syne', sans-serif; font-weight: 800; color: var(--primary); margin-right: 15px; }
+    nav a { text-decoration: none; font-size: 0.85rem; color: var(--muted); padding: 8px 15px; border-radius: 100px; transition: 0.3s; }
+    nav a.active { background: var(--primary-dim); color: var(--primary); }
+
+    /* --- MOBILE NAVIGATION --- */
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10001;
+      background: rgba(16, 13, 24, 0.95);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 25px;
+      width: 92%;
+      max-width: 450px;
+      height: 70px;
+      justify-content: space-around;
+      align-items: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    .mobile-nav a {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.65rem;
+      gap: 4px;
+      flex: 1;
+    }
+    .mobile-nav a i { font-size: 1.1rem; }
+    .mobile-nav a.active { color: var(--primary); }
+
+    /* --- CONTENT SECTIONS --- */
+    section { min-height: 100vh; padding: 120px 8% 80px; }
+    .section-label { color: var(--primary); font-family: 'Syne', sans-serif; text-transform: uppercase; letter-spacing: 3px; font-size: 0.7rem; margin-bottom: 10px; }
+    .section-title { font-family: 'Syne', sans-serif; font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; margin-bottom: 50px; }
+
+    /* --- HERO --- */
+    #home { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 40px; align-items: center; }
+    .hero-name { font-family: 'Syne', sans-serif; font-size: clamp(3rem, 8vw, 5.5rem); line-height: 1; margin-bottom: 15px; }
+    .hero-role { color: var(--primary); font-size: 1.5rem; font-weight: 600; margin-bottom: 20px; }
+    .hero-desc { color: var(--muted); max-width: 500px; margin-bottom: 30px; }
+    .hero-img-frame { border-radius: 30px; overflow: hidden; border: 1px solid var(--primary-dim); background: var(--surface2); }
+    .hero-img-frame img { width: 100%; display: block; }
+
+    /* --- PROJECTS GRID --- */
+    .projects-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; }
+    .project-card { background: var(--surface); border-radius: 20px; border: 1px solid var(--border); overflow: hidden; transition: 0.3s; }
+    .project-card:hover { transform: translateY(-5px); border-color: var(--primary-dim); }
+    .project-img { height: 200px; background: var(--surface2); overflow: hidden; }
+    .project-img img { width: 100%; height: 100%; object-fit: cover; }
+    .project-body { padding: 20px; }
+    .tag { font-size: 0.7rem; background: var(--primary-dim); color: var(--primary); padding: 4px 10px; border-radius: 50px; margin-right: 5px; display: inline-block; margin-bottom: 5px; }
+    .project-link { color: var(--primary); text-decoration: none; font-size: 0.8rem; font-weight: 700; margin-top: 15px; display: inline-block; }
+
+    /* --- CONTACT (FIXED & CLICKABLE) --- */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      background: var(--surface);
+      padding: 20px;
+      border-radius: 15px;
+      margin-bottom: 15px;
+      text-decoration: none;
+      color: var(--text);
+      border: 1px solid var(--border);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Glow effect on hover */
+    .contact-item::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--primary-dim);
+      opacity: 0;
+      transition: opacity 0.3s;
+      border-radius: 15px;
+    }
+    .contact-item:hover::before { opacity: 1; }
+    .contact-item:hover {
+      border-color: var(--primary);
+      transform: translateX(6px);
+      box-shadow: 0 0 20px var(--primary-glow);
+    }
+
+    .contact-item:active {
+      transform: scale(0.97);
+    }
+
+    .contact-icon {
+      width: 45px;
+      height: 45px;
+      background: var(--primary-dim);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+      transition: background 0.3s, transform 0.3s;
+    }
+
+    .contact-item:hover .contact-icon {
+      background: var(--primary);
+      color: white;
+      transform: scale(1.1);
+    }
+
+    .contact-text { position: relative; z-index: 1; }
+    .contact-label { font-size: 0.7rem; color: var(--muted); margin-bottom: 2px; }
+    .contact-value { font-size: 0.95rem; font-weight: 500; }
+
+    .contact-arrow {
+      margin-left: auto;
+      color: var(--muted);
+      font-size: 0.8rem;
+      position: relative;
+      z-index: 1;
+      transition: transform 0.3s, color 0.3s;
+    }
+    .contact-item:hover .contact-arrow {
+      transform: translateX(4px);
+      color: var(--primary);
+    }
+
+    /* WhatsApp specific */
+    .contact-item.whatsapp:hover .contact-icon { background: #25D366; }
+    .contact-item.whatsapp:hover { border-color: #25D366; box-shadow: 0 0 20px rgba(37, 211, 102, 0.3); }
+    .contact-item.whatsapp:hover .contact-arrow { color: #25D366; }
+
+    /* GitHub specific */
+    .contact-item.github:hover .contact-icon { background: #6e40c9; }
+    .contact-item.github:hover { border-color: #6e40c9; box-shadow: 0 0 20px rgba(110, 64, 201, 0.3); }
+    .contact-item.github:hover .contact-arrow { color: #6e40c9; }
+
+    /* Contact Form */
+    .contact-form {
+      background: var(--surface);
+      padding: 30px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+    }
+    .contact-form p { margin-bottom: 20px; color: var(--muted); }
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: white;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      transition: border-color 0.3s;
+      outline: none;
+    }
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      border-color: var(--primary);
+    }
+    .contact-form textarea { resize: vertical; margin-bottom: 15px; }
+    .contact-form button {
+      width: 100%;
+      padding: 12px;
+      background: var(--primary);
+      border: none;
+      color: white;
+      font-weight: bold;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-family: 'DM Sans', sans-serif;
+      transition: opacity 0.3s, transform 0.2s;
+    }
+    .contact-form button:hover { opacity: 0.85; transform: translateY(-1px); }
+    .contact-form button:active { transform: scale(0.98); }
+
+    /* --- RESPONSIVE --- */
+    @media (max-width: 768px) {
+      nav { display: none; }
+      .mobile-nav { display: flex; }
+      #home { grid-template-columns: 1fr; text-align: center; }
+      .hero-desc { margin: 0 auto 30px; }
+      .projects-grid, .contact-grid { grid-template-columns: 1fr; }
+      section { padding-bottom: 120px; }
+    }
+
+    .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s ease-out; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+<div id="intro">
+  <div class="intro-inner">
+    <div class="intro-ring"></div>
+    <h1 class="hero-name" style="font-size: 3rem;">Adiyat<span>.</span></h1>
+    <p>Klik untuk masuk</p>
+  </div>
+</div>
+
+<nav>
+  <div class="nav-logo">ADYAT</div>
+  <a href="#home" class="active">Home</a>
+  <a href="#about">About</a>
+  <a href="#projects">Projects</a>
+  <a href="#contact">Contact</a>
+</nav>
+
+<nav class="mobile-nav">
+  <a href="#home" class="active"><i class="fas fa-home"></i>Home</a>
+  <a href="#about"><i class="fas fa-user"></i>About</a>
+  <a href="#projects"><i class="fas fa-folder-open"></i>Projects</a>
+  <a href="#contact"><i class="fas fa-envelope"></i>Contact</a>
+</nav>
+
+<section id="home">
+  <div>
+    <div class="section-label">Frontend Developer</div>
+    <h1 class="hero-name">Hi, I'm Adiyat</h1>
+    <p class="hero-desc">Saya mewujudkan ide menjadi kode yang bersih, fungsional, dan berpusat pada pengguna. Spesialis React & Integrasi API.</p>
+    <a href="#contact" style="background: var(--primary); color: white; padding: 12px 30px; border-radius: 100px; text-decoration: none; font-weight: bold; display: inline-block;">Hire Me</a>
+  </div>
+  <div class="hero-img-frame">
+    <img src="A1.png" alt="Adiyat">
+  </div>
+</section>
+
+<section id="about" class="reveal">
+  <div class="section-label">Who I Am</div>
+  <h2 class="section-title">About Me</h2>
+  <p style="color: var(--muted); max-width: 800px;">Saya Adiyat, lulusan siswa TKJ di <strong>SMK Tri Arga 2</strong>. Saya berfokus pada pengembangan antarmuka web modern menggunakan <strong>React</strong> dan <strong>Tailwind CSS</strong>, serta antusias dalam mengintegrasikan AI ke dalam aplikasi praktis.</p>
+</section>
+
+<section id="projects" class="reveal">
+  <div class="section-label">My Work</div>
+  <h2 class="section-title">Featured Projects</h2>
+  <div class="projects-grid">
+    <div class="project-card">
+      <div class="project-img"><img src="A2.jpg" alt="Kateki"></div>
+      <div class="project-body">
+        <span class="tag">HTML</span><span class="tag">Tailwind</span><span class="tag">JavaScript</span>
+        <h3 style="margin: 10px 0;">Kateki Game Store</h3>
+        <p style="font-size: 0.85rem; color: var(--muted);">Toko online top-up game dengan sistem filter produk dan integrasi pembayaran.</p>
+        <a href="https://kateki-top-up--kateki0007.replit.app/" class="project-link" target="_blank">Live Demo →</a>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-img"><img src="A3.jpg" alt="Weather App"></div>
+      <div class="project-body">
+        <span class="tag">React</span><span class="tag">API</span><span class="tag">Tailwind</span>
+        <h3 style="margin: 10px 0;">Weather App</h3>
+        <p style="font-size: 0.85rem; color: var(--muted);">Aplikasi cuaca dengan deteksi lokasi otomatis dan saran cuaca cerdas menggunakan Open-Meteo API.</p>
+        <a href="https://adiyatrahman0.github.io/weather-app/" class="project-link">View Project →</a>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-img"><img src="A4.jpg" alt="Portfolio"></div>
+      <div class="project-body">
+        <span class="tag">UI/UX</span><span class="tag">CSS Animation</span>
+        <h3 style="margin: 10px 0;">Personal Portfolio</h3>
+        <p style="font-size: 0.85rem; color: var(--muted);">Website portofolio pribadi dengan efek cinematic, dark mode neon, dan scroll reveal.</p>
+        <a href="#" class="project-link">You are here →</a>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-img"><img src="A5.jpg" alt="Emilia"></div>
+      <div class="project-body">
+        <span class="tag">Node.js</span><span class="tag">WhatsApp API</span><span class="tag">AI</span>
+        <h3 style="margin: 10px 0;">Emilia Bot AI</h3>
+        <p style="font-size: 0.85rem; color: var(--muted);">Asisten WhatsApp cerdas yang mampu mengunduh media dan menjawab pertanyaan berbasis AI.</p>
+        <a href="https://emilia-ai-assistant--saaman869.replit.app/" class="project-link" target="_blank">View Project →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="reveal">
+  <div class="section-label">Connect</div>
+  <h2 class="section-title">Get In Touch</h2>
+  <div class="contact-grid">
+    <div class="contact-left">
+
+      <!-- EMAIL: href="mailto:..." membuka aplikasi email langsung -->
+      <a href="mailto:rahmanadiyat0@gmail.com" class="contact-item email">
+        <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+        <div class="contact-text">
+          <div class="contact-label">Email — klik untuk kirim pesan</div>
+          <div class="contact-value">rahmanadiyat0@gmail.com</div>
+        </div>
+        <i class="fas fa-arrow-right contact-arrow"></i>
+      </a>
+
+      <!-- WHATSAPP: href="https://wa.me/..." membuka WhatsApp langsung -->
+      <a href="https://wa.me/6289601574070?text=Halo%20Adiyat%2C%20saya%20tertarik%20untuk%20kolaborasi!" class="contact-item whatsapp" target="_blank" rel="noopener noreferrer">
+        <div class="contact-icon"><i class="fab fa-whatsapp"></i></div>
+        <div class="contact-text">
+          <div class="contact-label">WhatsApp — klik untuk chat</div>
+          <div class="contact-value">+62 896-0157-4070</div>
+        </div>
+        <i class="fas fa-arrow-right contact-arrow"></i>
+      </a>
+
+      <!-- GITHUB: href="https://github.com/..." membuka profil GitHub -->
+      <a href="https://github.com/AdiyatRahman0" class="contact-item github" target="_blank" rel="noopener noreferrer">
+        <div class="contact-icon"><i class="fab fa-github"></i></div>
+        <div class="contact-text">
+          <div class="contact-label">GitHub — lihat semua project</div>
+          <div class="contact-value">github.com/AdiyatRahman0</div>
+        </div>
+        <i class="fas fa-arrow-right contact-arrow"></i>
+      </a>
+
+    </div>
+    <div class="contact-form">
+      <p>Tertarik untuk kolaborasi? Kirim pesan langsung!</p>
+      <input type="text" placeholder="Nama" />
+      <textarea placeholder="Pesan" rows="4"></textarea>
+      <button onclick="sendWhatsApp()">Send via WhatsApp ↗</button>
+    </div>
+  </div>
+</section>
+
+<footer style="text-align: center; padding: 40px; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.8rem;">
+  <p>© 2026 Adiyat. Crafted with ♥ in Indonesia.</p>
+</footer>
+
+<script>
+  // Intro Logic
+  const intro = document.getElementById('intro');
+  intro.addEventListener('click', () => intro.classList.add('hidden'));
+  setTimeout(() => intro.classList.add('hidden'), 4000);
+
+  // Scroll Reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => observer.observe(r));
+
+  // Active Nav
+  const sections = document.querySelectorAll('section[id]');
+  const allLinks = document.querySelectorAll('nav a, .mobile-nav a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if(pageYOffset >= s.offsetTop - 200) current = s.getAttribute('id'); });
+    allLinks.forEach(a => {
+      a.classList.remove('active');
+      if(a.getAttribute('href') === `#${current}`) a.classList.add('active');
+    });
+  });
+
+  // Send via WhatsApp from form
+  function sendWhatsApp() {
+    const name = document.querySelector('.contact-form input').value.trim();
+    const message = document.querySelector('.contact-form textarea').value.trim();
+    if (!name || !message) {
+      alert('Mohon isi nama dan pesan terlebih dahulu!');
+      return;
+    }
+    const text = `Halo Adiyat, perkenalkan saya *${name}*.\n\n${message}`;
+    const encoded = encodeURIComponent(text);
+    window.open(`https://wa.me/6289601574070?text=${encoded}`, '_blank');
+  }
+</script>
+
+</body>
+</html>
